@@ -2,7 +2,7 @@ const request  = require( 'supertest' )
 const app = require( '../../src/app.js' )
 const mongoose = require( 'mongoose' )
 
-require('dotenv/config')
+require( 'dotenv/config' )
 
 const data = {
     email: 'test@test.com',
@@ -26,12 +26,12 @@ describe( "USER_CREATE", () => {
     it( "Deve criar um usuário.", async () => {
 
         const response = await request( app )
-            .post( '/user' )
+            .post( '/users' )
             .send( data )
    
-        expect( response ).toHaveProperty( 'message', 'Usuário criado com sucesso.' )
-        expect( response ).toHaveProperty( 'id' )
-        data.id = response.id
+        expect( response.body ).toHaveProperty( 'message', 'Usuário criado com sucesso.' )
+        expect( response.body ).toHaveProperty( 'id' )
+        data.id = response.body.id
     } )
 
 } )
@@ -44,10 +44,9 @@ describe( "USER_DELETE", () => {
 
         const response = await request( app )
             .delete( `/users/${ data.id }` )
-            .set( 'user', process.env.USER_MASTER )
-            .set( 'password', process.env.USER_MASTER_PASSWORD )
+            .set( {user: process.env.USER_MASTER, password: process.env.USER_MASTER_PASSWORD } )
 
-        expect( response ).toHaveProperty( 'message', 'Usuário deletado com sucesso.' )
+        expect( response.body ).toHaveProperty( 'message', 'Usuário deletado com sucesso.' )
 
     } )
 
