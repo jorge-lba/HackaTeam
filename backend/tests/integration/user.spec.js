@@ -45,7 +45,7 @@ describe( "USER_DELETE", () => {
         const response = await request( app )
             .delete( `/users/${ data.id }` )
             .set( 'user', process.env.USER_MASTER )
-            .set( 'authorization', process.env.USER_MASTER_PASSWORD )
+            .set( 'password', process.env.USER_MASTER_PASSWORD )
 
         expect( response ).toHaveProperty( 'message', 'Usuário deletado com sucesso.' )
 
