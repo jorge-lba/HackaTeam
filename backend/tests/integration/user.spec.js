@@ -56,6 +56,26 @@ describe( "USER_GET", () => {
 
     } )
 
+} ),
+
+describe( "USER_UPDATE", () => {
+
+    it( "Deve atualizar o nome para Jest", async () =>{
+
+        const dataSend = Object.assign( {}, data )
+        dataSend.name = 'Jest'
+
+        const response = await request( app )
+            .put( `/users/${ data._id }` )
+            .set( { 
+                user: data.email,
+                password: data.password
+            } )
+            .send( dataSend )
+
+        expect( response.body ).toHaveProperty( 'message', 'Usuário alterado com sucesso.' )
+    } )
+
 } )
 
 describe( "USER_DELETE", () => {

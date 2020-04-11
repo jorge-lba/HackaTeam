@@ -32,6 +32,27 @@ module.exports = {
         }
     },
 
+    async update( request, response ){
+        const email = request.header('user')
+        const password = request.header('password')
+
+        const user = await User.findById( request.params.id )
+
+        try {
+            if( email === user.email && password === user.password ){
+                await User.findByIdAndUpdate( request.params.id, {...request.body} )
+                delete response.password
+   
+                response.status( 200 ).json( { message: 'Usuário alterado com sucesso.' } )
+            }else{
+                response.status( 400 ).json( { error: 'ADMIN - Usuário ou Senha incorreto' } )
+            }
+        } catch (error) {
+            response.status( 400 ),json( { error } )
+        }
+
+    } ,
+
     async delete( request, response ){
         const user = request.header('user')
         const password = request.header('password')
