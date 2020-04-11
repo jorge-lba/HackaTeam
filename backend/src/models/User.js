@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema( {
         level: { type: Number, required: true },
         subdivision: [ { type: String } ]
     } ],
-    states:[ { type: String } ]
+    states:[ { type: String, default: 'open' } ]
 } )
 
 const User = mongoose.model( 'User', UserSchema )
