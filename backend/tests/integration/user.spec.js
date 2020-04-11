@@ -4,6 +4,8 @@ const mongoose = require( 'mongoose' )
 
 require( 'dotenv/config' )
 
+jest.setTimeout( 40000 )
+
 const data = {
     email: 'test@test.com',
     password: 'test123456',
@@ -32,6 +34,24 @@ describe( "USER_CREATE", () => {
         expect( response.body ).toHaveProperty( 'message', 'Usuário criado com sucesso.' )
         expect( response.body ).toHaveProperty( 'id' )
         data.id = response.body.id
+    } )
+
+} )
+
+describe( "USER_GET", () => {
+
+    it( "Deve retornar o usuário cadastrado", async () => {
+
+        const dataKeys = Object.keys( data )
+        const respose = await request( app )
+            .get( '/users' )
+
+        const [ user ] = respose.body
+        console.log( user )
+        dataKeys.forEach( key => {
+            expect( user ).toHaveProperty( key, data[ key ] )
+        } )
+
     } )
 
 } )
