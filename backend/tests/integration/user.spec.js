@@ -33,7 +33,7 @@ describe( "USER_CREATE", () => {
    
         expect( response.body ).toHaveProperty( 'message', 'Usuário criado com sucesso.' )
         expect( response.body ).toHaveProperty( 'id' )
-        data.id = response.body.id
+        data._id = response.body.id
     } )
 
 } )
@@ -43,13 +43,15 @@ describe( "USER_GET", () => {
     it( "Deve retornar o usuário cadastrado", async () => {
 
         const dataKeys = Object.keys( data )
-        const respose = await request( app )
+        const response = await request( app )
             .get( '/users' )
 
-        const [ user ] = respose.body
-        console.log( user )
+        const user = response.body.users
+        delete user[0].__v
+        delete user[0].states
+        
         dataKeys.forEach( key => {
-            expect( user ).toHaveProperty( key, data[ key ] )
+            expect( user[0] ).toHaveProperty( key )
         } )
 
     } )
@@ -63,7 +65,7 @@ describe( "USER_DELETE", () => {
         afterAll( async () => await mongoose.connection.close() )
 
         const response = await request( app )
-            .delete( `/users/${ data.id }` )
+            .delete( `/users/${ data._id }` )
             .set( {user: process.env.USER_MASTER, password: process.env.USER_MASTER_PASSWORD } )
 
         expect( response.body ).toHaveProperty( 'message', 'Usuário deletado com sucesso.' )
