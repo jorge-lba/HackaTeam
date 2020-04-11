@@ -1,6 +1,6 @@
 const request  = require( 'supertest' )
 const app = require( '../../src/app.js' )
-const mongoose = require( 'mongoose' )
+const mongoose = require( '../../src/database/index.js' )
 
 require( 'dotenv/config' )
 
@@ -80,9 +80,9 @@ describe( "USER_UPDATE", () => {
 
 describe( "USER_DELETE", () => {
 
-    it( "Deve delatar um usuário.", async () => {
+    it( "Deve delatar um usuário.", async ( ) => {
 
-        afterAll( async () => await mongoose.connection.close() )
+        afterAll( async ( ) => mongoose.disconnect() )
 
         const response = await request( app )
             .delete( `/users/${ data._id }` )
