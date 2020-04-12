@@ -21,7 +21,7 @@ const dataUser = {
     } ]
 }
 
-const dataTeam = {
+let dataTeam = {
     name: 'JEST TEAM'
 }
 
