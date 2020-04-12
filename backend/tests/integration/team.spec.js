@@ -49,6 +49,32 @@ describe( "TEAM_CREATE", () => {
         expect( response.body ).toHaveProperty( '_id' )
         expect( response.body ).toHaveProperty( 'members' )
 
+        dataTeam = { ...response.body }
+
+    } )
+
+} )
+
+describe( "TEAM_DELETE", () => {
+
+    it( "Deve delatar um usuário.", async ( ) => {
+
+        const response = await request( app )
+            .delete( `/users/${ dataUser._id }` )
+            .set( {user: process.env.USER_MASTER, password: process.env.USER_MASTER_PASSWORD } )
+
+        expect( response.body ).toHaveProperty( 'message', 'Usuário deletado com sucesso.' )
+
+    } )
+
+    it( "Deve deletar o Time.", async () => {
+
+        const response = await request( app )
+            .delete( `/teams/${ dataTeam._id }` )
+            .set( 'Authorization', dataUser._id )
+
+        expect( response.body ).toHaveProperty( 'message', 'Time deletado com sucesso.' )
+
     } )
 
 } )
