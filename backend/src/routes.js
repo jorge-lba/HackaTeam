@@ -11,5 +11,6 @@ routes.put( '/users/:id', UserController.update )
 routes.delete( '/users/:id', UserController.delete )
 
 routes.post( '/teams', TeamController.create )
+routes.delete( '/teams/:id', TeamController.delete )
 
 module.exports = routes
