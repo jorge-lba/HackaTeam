@@ -41,12 +41,12 @@ describe( "TEAM_CREATE", () => {
     it( "Deve criar um time", async () => {
 
         const response = await request( app )
-            .post( '/team' )
+            .post( '/teams' )
             .send( { userId: dataUser._id, name: dataTeam.name } )
         
         expect( response.body ).toHaveProperty( 'teamNumber', 1 )
         expect( response.body ).toHaveProperty( 'name', dataTeam.name )
-        expect( response.body ).toHaveProperty( 'id' )
+        expect( response.body ).toHaveProperty( '_id' )
         expect( response.body ).toHaveProperty( 'members' )
 
     } )
