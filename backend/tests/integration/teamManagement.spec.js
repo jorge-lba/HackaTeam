@@ -46,12 +46,26 @@ const usersAutoDelete = async ( users ) => {
 
 describe( "TEAM_MENAGEMENT_INVITE", () => {
 
-    it( 'Deve criar 5 usuarios', async () => {
+    const data = {}
 
-        const users = await request( app )
-            .get( '/users')
+    it( "Deve criar 5 usuários", async () => {
+        data.users = await usersAutoCreate( 5 )
+    })
 
-        const response = await usersAutoDelete( users.body.users )
+    it( "O primeiro usuário deve criar um time", async () => {
+        data.team = await request( app )
+            .post( '/teams' )
+            .send( { userId: data.users[0]._id, name: data.users[0].name } )
+    } )
+
+    it( "Deve convidar o segundo usuário para o time", async () => {
+
+        const response = await request( app )
+            .post( '/management' )
+            .send( { teamId: data.team._id, userLeaderId: data.users[0]._id, userInviteId: data.users[1]._id } )
+
+        expect( response.body ).toHaveProperty( 'message', 'Seu convite foi enviado' )
+
     } )
 
 } )
