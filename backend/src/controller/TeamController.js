@@ -3,6 +3,21 @@ const User = require( '../models/User.js' )
 require( 'dotenv/config' )
 
 module.exports = {
+
+    async index( request, response ){
+
+        try {
+            
+            let teams = await Team.find()
+            
+            response.status( 200 ).json( teams )
+
+        } catch (error) {
+            response.status( 400 ).json( error )
+        }
+
+    },
+
     async create( request, response ){
 
         try {
