@@ -62,7 +62,9 @@ describe( "TEAM_GET", () => {
         const response = await request( app )
             .get( '/teams' )
 
-        expect( typeof response.body ).toBe( 'array' )
+        const teams = response.body
+
+        expect( teams instanceof Array ).toBe( true )
         keys.forEach( key => expect( response.body[0] ).toHaveProperty( key ) )
 
     } )
