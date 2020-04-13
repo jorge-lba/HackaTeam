@@ -34,15 +34,24 @@ const usersAutoCreate = async ( amount ) => {
     return users
 }
 
-const usersAutoDelete = ( users ) => {
+const usersAutoDelete = async ( users ) => {
+
+    users.forEach( async user => 
+        await request( app )
+            .delete( `/users/${ user._id }` )
+            .set( {user: process.env.USER_MASTER, password: process.env.USER_MASTER_PASSWORD } )    
+    )
 
 }
 
 describe( "TEAM_MENAGEMENT_INVITE", () => {
 
     it( 'Deve criar 5 usuarios', async () => {
-        const response = await usersAutoCreate(5)
-        console.log( response )
+
+        const users = await request( app )
+            .get( '/users')
+
+        const response = await usersAutoDelete( users.body.users )
     } )
 
 } )
