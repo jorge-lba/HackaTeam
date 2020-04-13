@@ -41,6 +41,20 @@ module.exports = {
 
     },
 
+    async update( request, response ){
+
+        try {
+            
+            const team = await Team.findByIdAndUpdate( request.params.id, request.body, { new: true } )
+
+            response.status( 200 ).json( { message: 'Team atualizado com sucesso.', team } )
+
+        } catch (error) {
+            response.status( 400 ).json( error )
+        }
+
+    },
+
     async delete( request, response ){
 
         try {
