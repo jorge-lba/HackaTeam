@@ -53,6 +53,20 @@ describe( "TEAM_CREATE", () => {
 
     } )
 
+} ),
+
+describe( "TEAM_GET", () => {
+
+    it( "Deve retornar o team criado.", async () => {
+        const keys = [ 'teamNumber', 'name', 'members', '_id' ]
+        const response = await request( app )
+            .get( '/teams' )
+
+        expect( typeof response.body ).toBe( 'array' )
+        keys.forEach( key => expect( response.body[0] ).toHaveProperty( key ) )
+
+    } )
+
 } )
 
 describe( "TEAM_DELETE", () => {
