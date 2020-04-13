@@ -53,7 +53,7 @@ describe( "TEAM_CREATE", () => {
 
     } )
 
-} ),
+} )
 
 describe( "TEAM_GET", () => {
 
@@ -66,6 +66,22 @@ describe( "TEAM_GET", () => {
 
         expect( teams instanceof Array ).toBe( true )
         keys.forEach( key => expect( response.body[0] ).toHaveProperty( key ) )
+
+    } )
+
+} )
+
+describe( "TEAM_UPDATE", () => {
+
+    it( "Deve alterar o nome do time", async () => {
+
+        const response = await request( app )
+            .put( `/teams/${ dataTeam._id }` )
+            .set( 'Authorization', dataUser._id )
+            .send( { name: 'Team JEST' } )
+
+        expect( response.body ).toHaveProperty( 'message', 'Team atualizado com sucesso.' )
+        expect( response.body.team ).toHaveProperty( 'name', 'Team JEST' )
 
     } )
 
