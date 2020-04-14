@@ -63,8 +63,8 @@ describe( "TEAM_MENAGEMENT_INVITE", () => {
     it( "Deve convidar o segundo usuário para o time", async () => {
         
         const response = await request( app )
-            .post( '/management/team' )
-            .send( { teamId: data.team._id, userIdInvited: data.users[0].id, userIdWasInvited: data.users[1].id } )
+            .put( `/management/team/${data.team._id}` )
+            .send( { userIdInvited: data.users[0].id, userIdWasInvited: data.users[1].id } )
             
             
             expect( response.body ).toHaveProperty( 'message', 'Seu convite foi enviado' )

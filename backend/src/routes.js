@@ -16,6 +16,6 @@ routes.get( '/teams', TeamController.index )
 routes.put( '/teams/:id', TeamController.update )
 routes.delete( '/teams/:id', TeamController.delete )
 
-routes.post( '/management/team', ManagementController.create )
+routes.put( '/management/team/:id', ManagementController.invitation )
 
 module.exports = routes

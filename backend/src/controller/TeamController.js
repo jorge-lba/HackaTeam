@@ -1,5 +1,6 @@
 const Team = require( '../models/Team.js' )
 const User = require( '../models/User.js' )
+const Management = require( '../models/Management.js' )
 require( 'dotenv/config' )
 
 module.exports = {
@@ -33,6 +34,9 @@ module.exports = {
                     user
                 } ]
             })
+
+            await Management.create( { teamId: team._id } )
+    
             response.status( 200 ).json( team )
 
         } catch (error) {
