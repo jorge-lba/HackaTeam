@@ -1,5 +1,6 @@
 const request  = require( 'supertest' )
 const app = require( '../../src/app.js' )
+require( 'dotenv/config' )
 
 jest.setTimeout( 40000 )
 
@@ -36,12 +37,11 @@ const usersAutoCreate = async ( amount ) => {
 
 const usersAutoDelete = async ( users ) => {
 
-    users.forEach( async user => 
+    users.forEach( async user => {
         await request( app )
-            .delete( `/users/${ user._id }` )
+            .delete( `/users/${ user.id }` )
             .set( {user: process.env.USER_MASTER, password: process.env.USER_MASTER_PASSWORD } )    
-    )
-
+    })
 }
 
 describe( "TEAM_MENAGEMENT_INVITE", () => {
@@ -53,19 +53,26 @@ describe( "TEAM_MENAGEMENT_INVITE", () => {
     })
 
     it( "O primeiro usuário deve criar um time", async () => {
-        data.team = await request( app )
+        const team = await request( app )
             .post( '/teams' )
-            .send( { userId: data.users[0]._id, name: data.users[0].name } )
+            .send( { userId: data.users[0].id, name: data.users[0].name } )
+
+        data.team = team.body
     } )
 
     it( "Deve convidar o segundo usuário para o time", async () => {
-
+        
         const response = await request( app )
             .post( '/management/team' )
-            .send( { teamId: data.team._id, userLeaderId: data.users[0]._id, userInviteId: data.users[1]._id } )
-
-        expect( response.body ).toHaveProperty( 'message', 'Seu convite foi enviado' )
-
+            .send( { teamId: data.team._id, userIdInvited: data.users[0].id, userIdWasInvited: data.users[1].id } )
+            
+            
+            expect( response.body ).toHaveProperty( 'message', 'Seu convite foi enviado' )
+            
     } )
 
+    it( "Deve deletar dos 5 usuários criados", async () => {
+        await usersAutoDelete( data.users )
+    } )
+        
 } )
