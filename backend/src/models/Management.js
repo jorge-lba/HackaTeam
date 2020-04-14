@@ -17,3 +17,6 @@ const ManagementSchema = new mongoose.Schema( {
     }],
 
 }, { _id: false } )
+
+const Management = mongoose.model( 'Menagement', ManagementSchema )
+module.exports = ManagementSchema
