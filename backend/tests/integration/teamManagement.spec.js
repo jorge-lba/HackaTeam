@@ -44,9 +44,10 @@ const usersAutoDelete = async ( users ) => {
     })
 }
 
+const data = {}
+
 describe( "TEAM_MENAGEMENT_INVITE", () => {
 
-    const data = {}
 
     it( "Deve criar 5 usuários", async () => {
         data.users = await usersAutoCreate( 5 )
@@ -77,13 +78,26 @@ describe( "TEAM_MENAGEMENT_INVITE", () => {
             .put( `/management/team/${data.team._id}` )
             .send( { userIdInvited: data.users[0].id, userIdWasInvited: data.users[2].id } )
             
+        expect( response.body ).toHaveProperty( 'message', 'Seu convite foi enviado' )
             
-            expect( response.body ).toHaveProperty( 'message', 'Seu convite foi enviado' )
-            
+    } )
+        
+} )
+
+describe( "TEAM_MENAGEMENT_CANCEL", () => {
+
+    it( "Deve cancelar convite ", async () => {
+
+        const response = await request( app )
+            .delete( `/management/team/${data.team._id}` )
+            .send( { userIdInvited: data.users[0].id, userIdWasInvited: data.users[2].id } )
+
+        expect( response.body ).toHaveProperty( 'message', 'Convite cancelado.' )
+
     } )
 
     it( "Deve deletar dos 5 usuários criados", async () => {
         await usersAutoDelete( data.users )
     } )
-        
+
 } )
