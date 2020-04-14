@@ -28,6 +28,42 @@ module.exports = {
             response.status( 400 ).json( {error} )
         }
 
+    },
+
+    async cancel( request, response ){
+
+        try {
+            const data = {
+                requestsInitialized: [],
+                requestsClosed: []
+            } 
+            
+            const teamId = request.params.id
+            const { userIdInvited, userIdWasInvited } = request.body
+            const [management] = await Management.find( { teamId } )
+            
+            data.requestsInitialized = management.requestsInitialized.filter( element => {
+                if( element.userIdInvited !== userIdInvited || element.userIdWasInvited !== userIdWasInvited ){
+                    return true
+                }
+                const elementNew = Object.assign( {}, element.toJSON() )
+                elementNew.dateEnd = Date.now()
+                elementNew.state = "canceled"
+                data.requestsClosed.push( elementNew )
+                return false
+            } )
+
+            management.requestsInitialized = data.requestsInitialized
+            management.requestsClosed = data.requestsClosed
+
+            await Management.findOneAndUpdate( { teamId }, management )
+    
+            response.status( 200 ).json( { message: 'Convite cancelado.' } )
+
+        } catch (error) {
+            response.status( 400 ).json( { error } )
+        }
+
     }
 
 }

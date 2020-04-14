@@ -11,6 +11,7 @@ const ManagementSchema = new mongoose.Schema( {
     }],
     requestsClosed: [{
         dateInit: { type: Date },
+        state: { type: String },
         userIdInvited: { type: String },
         userIsWasInvited: { type: String },
         dateEnd: { type: Date, default: Date.now() }
