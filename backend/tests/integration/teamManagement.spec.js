@@ -71,6 +71,17 @@ describe( "TEAM_MENAGEMENT_INVITE", () => {
             
     } )
 
+    it( "Deve convidar o terceiro usuário para o time", async () => {
+        
+        const response = await request( app )
+            .put( `/management/team/${data.team._id}` )
+            .send( { userIdInvited: data.users[0].id, userIdWasInvited: data.users[2].id } )
+            
+            
+            expect( response.body ).toHaveProperty( 'message', 'Seu convite foi enviado' )
+            
+    } )
+
     it( "Deve deletar dos 5 usuários criados", async () => {
         await usersAutoDelete( data.users )
     } )
