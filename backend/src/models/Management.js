@@ -5,18 +5,18 @@ const ManagementSchema = new mongoose.Schema( {
     teamId: { type: String, required: true },
     requestsInitialized: [{
         dateInit: { type: Date, default: Date.now() },
-        userIdInvited: { type: String, required: true },
-        userIsWasInvited: { type: String, required: true },
+        userIdInvited: { type: String },
+        userIdWasInvited: { type: String },
         dateEnd: { type: Date }
     }],
     requestsClosed: [{
         dateInit: { type: Date },
-        userIdInvited: { type: String, required: true },
-        userIsWasInvited: { type: String, required: true },
+        userIdInvited: { type: String },
+        userIsWasInvited: { type: String },
         dateEnd: { type: Date, default: Date.now() }
     }],
 
-}, { _id: false } )
+} )
 
-const Management = mongoose.model( 'Menagement', ManagementSchema )
-module.exports = ManagementSchema
+const Management = mongoose.model( 'Management', ManagementSchema )
+module.exports = Management
