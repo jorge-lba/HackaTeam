@@ -2,6 +2,7 @@ const express = require( 'express' )
 
 const UserController = require( './controller/UserController.js' )
 const TeamController = require( './controller/TeamController.js' )
+const ManagementController = require( './controller/ManagementTeamController.js' )
 
 const routes = express.Router()
 
@@ -14,5 +15,7 @@ routes.post( '/teams', TeamController.create )
 routes.get( '/teams', TeamController.index )
 routes.put( '/teams/:id', TeamController.update )
 routes.delete( '/teams/:id', TeamController.delete )
+
+routes.post( '/management/team', ManagementController.create )
 
 module.exports = routes
