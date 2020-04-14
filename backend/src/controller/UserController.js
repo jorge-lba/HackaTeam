@@ -65,7 +65,7 @@ module.exports = {
                 response.status( 400 ).json( { error: 'ADMIN - Usuário ou Senha incorreto' } )
             }
         } catch (error) {
-            response.status( 400 ),json( { error } )
+            response.status( 400 ).json( { error } )
         }
 
     }
