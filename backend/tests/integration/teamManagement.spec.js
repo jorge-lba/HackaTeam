@@ -101,7 +101,7 @@ describe( "TEAM_MANAGEMENT_CANCEL", () => {
 
 } )
 
-describe( "TEAM_MANAGEMENT", () => {
+describe( "TEAM_MANAGEMENT_ACCEPT", () => {
 
     it( "Adiciona uma solicitação de entrada no time.", async () => {
 
@@ -122,6 +122,32 @@ describe( "TEAM_MANAGEMENT", () => {
             .send( { userLeader: data.users[0].id, userIdInvited: data.users[3].id } )
 
         expect( response.body ).toHaveProperty( 'message', 'Solicitação de entrada aceita.' )
+
+    } )
+
+} )
+
+describe( "TEAM_MANAGEMENT_REFUSE", () => {
+
+    it( "Adiciona uma solicitação de entrada no time.", async () => {
+
+        const dataNew = {
+            userIdInvited: data.users[4].id,
+            userIdWasInvited: data.users[0].id
+        }
+
+        await Management.findOneAndUpdate( { teamId: data.team._id }, {
+            $push: { requestsInitialized: dataNew }
+        } )
+    } )
+
+    it( "Deve aceitar a solicitação de entrada do usuário 5.", async () => {
+
+        const response = await request( app )
+            .put( `/management/team/${data.team._id}/refuse` )
+            .send( { userLeader: data.users[0].id, userIdInvited: data.users[4].id } )
+
+        expect( response.body ).toHaveProperty( 'message', 'Solicitação de entrada recusada.' )
 
     } )
 
