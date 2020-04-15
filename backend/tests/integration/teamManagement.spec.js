@@ -110,17 +110,16 @@ describe( "TEAM_MANAGEMENT", () => {
             userIdWasInvited: data.users[0].id
         }
 
-        const response = await Management.findOneAndUpdate( { teamId: data.team._id }, {
+        await Management.findOneAndUpdate( { teamId: data.team._id }, {
             $push: { requestsInitialized: dataNew }
-        }, { new: true } )
-        console.log( response )
+        } )
     } )
 
     it( "Deve aceitar a solicitação de entrada do usuário 4.", async () => {
 
         const response = await request( app )
-            .put( `management/team/${data.team._id}/accept` )
-            .send( { teamId: data.team._id, userLeader: data.users[0].id } )
+            .put( `/management/team/${data.team._id}/accept` )
+            .send( { userLeader: data.users[0].id, userIdInvited: data.users[3].id } )
 
         expect( response.body ).toHaveProperty( 'message', 'Solicitação de entrada aceita.' )
 
