@@ -1,5 +1,8 @@
 const request  = require( 'supertest' )
 const app = require( '../../src/app.js' )
+
+const Management = require( '../../src/models/Management.js' )
+
 require( 'dotenv/config' )
 
 jest.setTimeout( 40000 )
@@ -46,7 +49,7 @@ const usersAutoDelete = async ( users ) => {
 
 const data = {}
 
-describe( "TEAM_MENAGEMENT_INVITE", () => {
+describe( "TEAM_MANAGEMENT_INVITE", () => {
 
 
     it( "Deve criar 5 usuários", async () => {
@@ -84,7 +87,7 @@ describe( "TEAM_MENAGEMENT_INVITE", () => {
         
 } )
 
-describe( "TEAM_MENAGEMENT_CANCEL", () => {
+describe( "TEAM_MANAGEMENT_CANCEL", () => {
 
     it( "Deve cancelar convite ", async () => {
 
@@ -95,6 +98,34 @@ describe( "TEAM_MENAGEMENT_CANCEL", () => {
         expect( response.body ).toHaveProperty( 'message', 'Convite cancelado.' )
 
     } )
+
+} )
+
+describe( "TEAM_MANAGEMENT", () => {
+
+    it( "Adiciona uma solicitação de entrada no time.", async () => {
+
+        const dataNew = {
+            userIdInvited: data.users[3].id,
+            userIdWasInvited: data.users[0].id
+        }
+
+        const response = await Management.findOneAndUpdate( { teamId: data.team._id }, {
+            $push: { requestsInitialized: dataNew }
+        }, { new: true } )
+        console.log( response )
+    } )
+
+    it( "Deve aceitar a solicitação de entrada do usuário 4.", async () => {
+
+        const response = await request( app )
+            .put( `management/team/${data.team._id}/accept` )
+            .send( { teamId: data.team._id, userLeader: data.users[0].id } )
+
+        expect( response.body ).toHaveProperty( 'message', 'Solicitação de entrada aceita.' )
+
+    } )
+
 
     it( "Deve deletar dos 5 usuários criados", async () => {
         await usersAutoDelete( data.users )
