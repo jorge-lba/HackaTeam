@@ -54,7 +54,7 @@ module.exports = {
             } )
 
             management.requestsInitialized = data.requestsInitialized
-            management.requestsClosed = data.requestsClosed
+            management.requestsClosed = data.requestsClosed.concat( management.requestsClosed )
 
             await Management.findOneAndUpdate( { teamId }, management )
     
@@ -64,6 +64,43 @@ module.exports = {
             response.status( 400 ).json( { error } )
         }
 
-    }
+    },
+
+    async accept( request, response ){
+
+        try {
+            const data = {
+                requestsInitialized: [],
+                requestsClosed: []
+            } 
+            
+            const { userIdInvited, userLeader } = request.body
+            const teamId = request.params.id
+
+            const management = await Management.findOne( { teamId } )
+        
+            data.requestsInitialized = management.requestsInitialized.filter( element => {
+                if( element.userIdWasInvited !== userLeader || element.userIdInvited !== userIdInvited ){
+                    return true
+                }
+                const elementNew = Object.assign( {}, element.toJSON() )
+                elementNew.dateEnd = Date.now()
+                elementNew.state = "accept"
+                data.requestsClosed.push( elementNew )
+                return false
+            } )
+
+            management.requestsInitialized = data.requestsInitialized
+            management.requestsClosed = data.requestsClosed.concat( management.requestsClosed )
+
+            await Management.findOneAndUpdate( { teamId }, management )
+
+            response.status( 200 ).json( { message: 'Solicitação de entrada aceita.' })    
+
+        } catch (error) {
+            response.status( 400 ).json( { error } )
+        }
+
+    },
 
 }
