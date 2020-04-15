@@ -92,7 +92,7 @@ describe( "TEAM_MANAGEMENT_CANCEL", () => {
     it( "Deve cancelar convite ", async () => {
 
         const response = await request( app )
-            .delete( `/management/team/${data.team._id}` )
+            .put( `/management/team/${data.team._id}/cancel` )
             .send( { userIdInvited: data.users[0].id, userIdWasInvited: data.users[2].id } )
 
         expect( response.body ).toHaveProperty( 'message', 'Convite cancelado.' )
@@ -154,6 +154,16 @@ describe( "TEAM_MANAGEMENT_REFUSE", () => {
 
     it( "Deve deletar dos 5 usuários criados", async () => {
         await usersAutoDelete( data.users )
+    } )
+
+    it( "Deve deletar o Time.", async () => {
+
+        const response = await request( app )
+            .delete( `/teams/${ data.team._id }` )
+            .set( 'Authorization', data.users[0].id )
+
+        expect( response.body ).toHaveProperty( 'message', 'Time deletado com sucesso.' )
+
     } )
 
 } )

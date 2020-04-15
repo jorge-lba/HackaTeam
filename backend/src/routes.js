@@ -17,7 +17,7 @@ routes.put( '/teams/:id', TeamController.update )
 routes.delete( '/teams/:id', TeamController.delete )
 
 routes.put( '/management/team/:id', ManagementController.invitation )
-routes.delete( '/management/team/:id', ManagementController.cancel )
+routes.put( '/management/team/:id/cancel', ManagementController.cancel )
 routes.put( '/management/team/:id/accept', ManagementController.accept )
 routes.put( '/management/team/:id/refuse', ManagementController.refuse )
 
