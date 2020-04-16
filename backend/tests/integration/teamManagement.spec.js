@@ -91,7 +91,7 @@ describe( "TEAM_MANAGEMENT_ACCEPT", () => {
 } )
 
 describe( "TEAM_MANAGEMENT_REFUSE", () => {
-
+    afterAll( async ( ) => mongoose.disconnect() )
     it( "Adiciona uma solicitação de entrada no time.", async () => {
 
         const dataNew = {
